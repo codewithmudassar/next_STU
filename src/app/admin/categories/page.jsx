@@ -44,9 +44,7 @@ const DatePage = () => {
   const confirmDelete = async () => {
     if (!selectedCategory) return;
     try {
-      await axios.delete("/api/category", {
-        data: { id: selectedCategory._id },
-      });
+      await axios.delete(`/api/category/${selectedCategory._id}`);
       setCat((prev) => prev.filter((item) => item._id !== selectedCategory._id));
       setShowModal(false);
       setSelectedCategory(null);
@@ -94,9 +92,9 @@ const DatePage = () => {
       </div>
 
       {showModal && selectedCategory && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-lg p-6 shadow-lg w-full max-w-sm text-center">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">Confirmation!</h2>
+        <div className="fixed inset-0 bg-black/70 bg-opacity-40 flex items-center justify-center z-50 px-4">
+          <div className="bg-white   shadow-lg w-full max-w-sm text-center  pb-6">
+            <h2 className="text-xl font-bold mb-4 text-white bg-blue-500  py-2 ">Confirmation!</h2>
             <p className="mb-6 text-gray-700">
               Do you want to delete <strong>{selectedCategory.title}</strong>?
             </p>
@@ -114,7 +112,7 @@ const DatePage = () => {
                 }}
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-400"
               >
-                Exit
+                No
               </button>
             </div>
           </div>

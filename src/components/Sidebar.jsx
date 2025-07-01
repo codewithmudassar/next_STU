@@ -40,7 +40,7 @@ const toggleSidebar = ()=>{
       </h1>
       <div className="flex flex-col gap-5 p-3">
         {links.map((v, i) => (
-          <Link href={v.path} key={i} className={`flex gap-4 p-2 ${!expand?" pl-3":""} rounded-md cursor-pointer hover:bg-blue-400 hover:text-white ${pathname === v.path ?"bg-blue-500 text-white":"text-blue-500"}`}>
+          <Link href={v.path} key={i} className={`flex gap-4 p-2 ${!expand?" pl-3":""} rounded-md cursor-pointer border border-blue-500 hover:bg-blue-400 hover:text-white ${pathname === v.path ?"bg-blue-500 text-white":"text-blue-500"}`}>
             <div>{v.icon}</div>
             <p
   className={`transition-all duration-300 origin-left ${
