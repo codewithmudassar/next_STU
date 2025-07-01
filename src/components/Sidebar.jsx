@@ -36,11 +36,11 @@ const toggleSidebar = ()=>{
   return (
     <div className={` ${expand ?"w-56":"w-20"} border-r border-blue-500 h-screen transition-all duration-700 relative `}>
       <h1 className={` text-blue-500 flex justify-center font-bold mb-5 pt-2 ${expand ?"text-2xl":"text-lg mb-6"}`}>
-        Amazon
+        Sizzle Shop
       </h1>
       <div className="flex flex-col gap-5 p-3">
         {links.map((v, i) => (
-          <Link href={v.path} key={i} className={`flex gap-4 border p-2 ${!expand?" pl-3":""} rounded-md cursor-pointer hover:bg-blue-400 hover:text-white ${pathname === v.path ?"bg-blue-500 text-white":"text-blue-500"}`}>
+          <Link href={v.path} key={i} className={`flex gap-4 p-2 ${!expand?" pl-3":""} rounded-md cursor-pointer hover:bg-blue-400 hover:text-white ${pathname === v.path ?"bg-blue-500 text-white":"text-blue-500"}`}>
             <div>{v.icon}</div>
             <p
   className={`transition-all duration-300 origin-left ${
