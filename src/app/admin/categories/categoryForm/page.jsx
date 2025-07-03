@@ -12,7 +12,6 @@ const router = useRouter()
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
         
-        // Clear error when user starts typing
         if (error) setError(null);
     };
      const  handleSubmit = async (e)=>{
@@ -34,7 +33,7 @@ const router = useRouter()
   return (
     <>
     <Toaster/>
-    <div className='w-full h-screen flex items-center justify-center'>
+    <div className='w-full h-[70vh] flex items-center justify-center'>
       <form onSubmit={handleSubmit} className='w-1/3 bg-white p-5 rounded-lg shadow-lg'>
         <h1 className='text-2xl font-bold mb-4'>Create Category</h1>
         <div className='mb-4'>

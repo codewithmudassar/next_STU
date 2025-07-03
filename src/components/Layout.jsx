@@ -15,8 +15,11 @@ const Layout = ({ children }) => {
             <div>
               <Sidebar />
             </div>
-            <div className="flex-1 ">
+            <div className="flex-1 overflow-auto">
+              <div className="sticky top-0 z-50">
+
               <Dnav />
+              </div>
 
               {children}
             </div>

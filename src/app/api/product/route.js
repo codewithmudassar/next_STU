@@ -9,7 +9,7 @@ export async function POST(req) {
         await dbConnect();
         const product = await Product.create(data);
         return NextResponse.json(       
-            {product, message: "Product Created Successfully"},
+            {product, message: "Product Created Successfully", success: true},
             {status: 201}
         ); 
         

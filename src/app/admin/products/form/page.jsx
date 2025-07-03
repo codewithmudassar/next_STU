@@ -30,7 +30,6 @@ const router = useRouter()
       useEffect(() => {
         catFetch();
       }, []);
-      console.log(option)
 
     const [tempImages, setTempImages] = useState([]);
       
@@ -46,17 +45,15 @@ const router = useRouter()
                 try {
                     
                     setLoading(true);
-                    const res = axios.post("/api/product",{
+                    const res = await axios.post("/api/product",{
                         ...formData,
                         images:tempImages
                     })
-                    if (res?.success) {
+
+                    if (res?.data.success) {
         toast.success("Submitted successfully");
         setTimeout(() => {
           router.back();
-          setTimeout(() => {
-            window.location.reload();
-          }, 1000);
         }, 1000);
       } else {
         toast.error("Submission failed. Please try again.");
@@ -76,7 +73,6 @@ const router = useRouter()
       <div className="container mx-auto p-4">
         <Toaster />
         <div className="border rounded-lg bg-gray-200 mt-5 mb-7 p-4">
-          {/* <BackButton /> */}
           <div className="text-blue-500 font-extrabold text-3xl text-center mb-5">
             Add Product
           </div>
