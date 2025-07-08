@@ -1,6 +1,7 @@
 import Product from "@/models/product";
 import dbConnect from "@/backend/dbConnect";
 import { NextResponse } from "next/server";
+import Category from "@/models/category";
 
 
 export async function POST(req) {
@@ -26,4 +27,28 @@ export async function POST(req) {
         )
     }
     
+}
+
+export async function GET(req) {
+  await dbConnect();
+  try {
+    const product = await Product.find().populate("category");
+    return NextResponse.json(
+      {
+        products: product,
+        message: "Products fetched successfully",
+        success: true,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      {
+        message: "Failed to fetch products",
+        error: error.message,
+        success: false,
+      },
+      { status: 500 } // ✅ lowercase 'status'
+    );
+  }
 }

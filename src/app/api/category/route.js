@@ -28,7 +28,7 @@ export  async function GET(req) {
     try {
         const categories = await Category.find()
         return NextResponse.json(
-            {categories},
+            {categories,success:true},
             {status: 200}
         )
     } catch (error) {
