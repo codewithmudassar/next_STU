@@ -75,7 +75,7 @@ const DatePage = () => {
         {isLoading && <p className="text-gray-500">Loading...</p>}
         {error && <p className="text-blue-500">{error}</p>}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {cat.map((cat) => (
+          {(Array.isArray(cat) ? cat : []).map((cat) => (
             <div key={cat._id} className="border rounded p-4 shadow-sm bg-white">
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-bold text-gray-700">{cat.title}</h3>

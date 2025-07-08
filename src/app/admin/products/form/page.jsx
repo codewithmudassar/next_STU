@@ -53,7 +53,7 @@ const router = useRouter()
                     if (res?.data.success) {
         toast.success("Submitted successfully");
         setTimeout(() => {
-          router.back();
+          router.push("/shop");
         }, 1000);
       } else {
         toast.error("Submission failed. Please try again.");

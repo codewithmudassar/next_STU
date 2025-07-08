@@ -30,6 +30,7 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
+<<<<<<< Updated upstream
   await dbConnect();
   try {
     const product = await Product.find().populate("category");
@@ -52,3 +53,19 @@ export async function GET(req) {
     );
   }
 }
+=======
+    await dbConnect();
+    try {
+        const products = await Product.find().populate('category');
+        return NextResponse.json(
+            { products },
+            { status: 200 }
+        );
+    } catch (error) {
+        return NextResponse.json(
+            { error: error.message },
+            { status: 500 }
+        );
+    }
+}
+>>>>>>> Stashed changes
