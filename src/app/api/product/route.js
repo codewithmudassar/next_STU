@@ -31,6 +31,7 @@ export async function POST(req) {
 
 export async function GET(req) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   await dbConnect();
   try {
     const product = await Product.find().populate("category");
@@ -54,6 +55,8 @@ export async function GET(req) {
   }
 }
 =======
+=======
+>>>>>>> Stashed changes
     await dbConnect();
     try {
         const products = await Product.find().populate('category');
@@ -67,5 +70,9 @@ export async function GET(req) {
             { status: 500 }
         );
     }
+<<<<<<< Updated upstream
+}
+>>>>>>> Stashed changes
+=======
 }
 >>>>>>> Stashed changes
