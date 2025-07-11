@@ -30,9 +30,6 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   await dbConnect();
   try {
     const product = await Product.find().populate("category");
@@ -51,35 +48,7 @@ export async function GET(req) {
         error: error.message,
         success: false,
       },
-      { status: 500 } // ✅ lowercase 'status'
+      { status: 500 }
     );
   }
 }
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-    await dbConnect();
-    try {
-        const products = await Product.find().populate('category');
-        return NextResponse.json(
-            { products },
-            { status: 200 }
-        );
-    } catch (error) {
-        return NextResponse.json(
-            { error: error.message },
-            { status: 500 }
-        );
-    }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-}
->>>>>>> Stashed changes
-=======
-}
->>>>>>> Stashed changes
-=======
-}
->>>>>>> Stashed changes
