@@ -1,39 +1,36 @@
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState} from "react";
 import axios from "axios";
-// import { AuthContext } from "@/context/AuthContext";
-import toast from "react-hot-toast";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
 // import { CartContext } from "@/context/CartProvider";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { MenuIcon, X } from "lucide-react";
+import { ChartBar, LogOutIcon, MenuIcon,  User2, X } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  // const { user, refetch } = useContext(AuthContext);
-  // const { cartItems } = useContext(CartContext);
-  // const NoOfCartItems = cartItems.length;
+  const { user} = useAuth();
 
-  // const handleLogout = async () => {
-  //   try {
-  //     const confirmLogout = window.confirm("Are you sure you want to logout?");
-  //     if (!confirmLogout) return;
-  //     const res = await axios.post("/api/auth/logout");
-  //     if (res.data.success) {
-  //       toast.success("User Logout Successfully!");
-  //       window.location.reload();
-  //       router.push("/login");
-  //       refetch();
-  //     }
-  //   } catch (error) {
-  //     console.error("Logout failed", error);
-  //   }
-  // };
+
+  const handleLogout = async () => {
+    try {
+      const confirmLogout = window.confirm("Are you sure you want to logout?");
+      if (!confirmLogout) return;
+      const res = await axios.post("/api/logout");
+      if (res.data.success) {
+        toast.success("User Logout Successfully!");
+        window.location.reload();
+        router.push("/login");
+        // refetch();
+      }
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -92,35 +89,35 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
-                  href="/admin"
+                  href="/shop"
                   className={`block py-2 px-3 text-gray-900 hover:bg-blue-100 rounded md:hover:bg-transparent ${
                     pathname === "/category" ? "text-blue-600 font-bold" : ""
                   } md:hover:text-blue-500 md:p-0p active:text-blue-500`}
                   aria-current="page"
                 >
-                  Admin
+                  Shop
                 </Link>
               </li>
 
               <div>
-                {
-                  <li>
+                { !user &&
+                 ( <li>
                     <Link
                       href="/login"
                       className="block py-2 px-3 text-gray-900 rounded hover:bg-blue-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0p focus:text-blue-500"
                     >
                       login
                     </Link>
-                  </li>
+                  </li>)
                 }
               </div>
             </ul>
 
-            {/* {user ? (
+            {user ? (
               <div className="flex justify-between items-center md:hidden">
                 <div className="flex group relative md:hidden items-center gap-2 pr-4 md:border-l  pl-2.5">
                   <img
-                    src={user.photo}
+                    src={user.photo || "/avatar.jpg"}
                     alt="image here"
                     className="rounded-full h-9 w-9 object-cover cursor-pointer border border-gray-300"
                   />
@@ -139,34 +136,28 @@ const Navbar = () => {
                   >
                     <ul className="px-4 py-5">
                       <li className="flex flex-col gap-2">
-                        {user?.isAdmin ? (
+                      {user.isAdmin && (
+
                           <Link
                             className="text-xs text-gray-600 hover:text-blue-600 flex items-center gap-2"
                             href="/admin"
                           >
-                            <i className="bx bxs-bar-chart-alt-2"></i> Dashboard
+                            <ChartBar size={20} /> Dashboard
                           </Link>
-                        ) : (
-                          <Link
-                            className="text-xs text-gray-600 hover:text-blue-600 flex items-center gap-2"
-                            href="/admin/product"
-                          >
-                            <i className="bx bxs-bar-chart-alt-2"></i> Dashboard
-                          </Link>
-                        )}
-
+                      )}
+                        
                         <Link
                           className="text-xs text-gray-600 my-2 hover:text-blue-600 flex items-center gap-2"
-                          href="/admin/product"
+                          href="/profile"
                         >
-                          <i className="bx bxs-label"></i> Products
+                          <User2/> Profile
                         </Link>
 
                         <button
                           onClick={handleLogout}
                           className="text-xs text-gray-600 hover:text-blue-700 flex items-center gap-2"
                         >
-                          <i className="bx bxs-log-out"></i>
+                          <LogOutIcon size={20} />
                           Logout
                         </button>
                       </li>
@@ -174,7 +165,7 @@ const Navbar = () => {
                   </div>
                 </div>
                 
-                <Link href={"/cart"}>
+                {/* <Link href={"/cart"}>
                   <i className=" bx bx-cart  relative cursor-pointer text-2xl text-gray-600 hover:text-blue-500">
                     {NoOfCartItems <= 0 ? null : (
                       <span className="bg-blue-300 text-[#344352] absolute -top-1 left-2 text-xs rounded-full h-4 w-4 flex items-center justify-center">
@@ -182,14 +173,14 @@ const Navbar = () => {
                       </span>
                     )}
                   </i>
-                </Link>
+                </Link> */}
               </div>
-            ) : null} */}
+            ) : null}
           </div>
-          {/* {user ? (
+          {user ? (
             <div className="  hidden items-center md:block md:order-2">
               <div className="flex gap-4">
-                <Link href={"/cart"}>
+                {/* <Link href={"/cart"}>
                   <i className=" bx bx-cart  relative cursor-pointer text-2xl text-gray-600 hover:text-blue-500">
                     {NoOfCartItems <= 0 ? null : (
                       <span className="bg-blue-300 text-[#344352] absolute -top-1 left-2 text-xs rounded-full h-4 w-4 flex items-center justify-center">
@@ -197,11 +188,11 @@ const Navbar = () => {
                       </span>
                     )}
                   </i>
-                </Link>
+                </Link> */}
 
                 <div className="flex group relative  items-center gap-2 pr-4 md:border-l  pl-2.5">
                   <img
-                    src={user.photo}
+                    src={user.photo || "/avatar.jpg"}
                     alt="image here"
                     className="rounded-full h-9 w-9 object-cover cursor-pointer border border-gray-300"
                   />
@@ -219,34 +210,29 @@ const Navbar = () => {
                   >
                     <ul className="px-4 py-5">
                       <li className="flex flex-col gap-2">
-                        {user?.isAdmin ? (
+                        {user.isAdmin && (
+
                           <Link
                             className="text-xs text-gray-600 hover:text-blue-600 flex items-center gap-2"
                             href="/admin"
                           >
-                            <i className="bx bxs-bar-chart-alt-2"></i> Dashboard
-                          </Link>
-                        ) : (
-                          <Link
-                            className="text-xs text-gray-600 hover:text-blue-600 flex items-center gap-2"
-                            href="/admin/product"
-                          >
-                            <i className="bx bxs-bar-chart-alt-2"></i> Dashboard
+                            <ChartBar size={20} /> Dashboard
                           </Link>
                         )}
+                      
 
                         <Link
                           className="text-xs text-gray-600 my-2 hover:text-blue-600 flex items-center gap-2"
-                          href="/admin/product"
+                          href="/profile"
                         >
-                          <i className="bx bxs-label"></i> Products
+                          <User2/> Profile
                         </Link>
 
                         <button
                           onClick={handleLogout}
                           className="text-xs text-gray-600 hover:text-blue-700 flex items-center gap-2"
                         >
-                          <i className="bx bxs-log-out"></i>
+                          <LogOutIcon size={20} />
                           Logout
                         </button>
                       </li>
@@ -255,7 +241,7 @@ const Navbar = () => {
                 </div>
               </div>
             </div>
-          ) : null} */}
+          ) : null}
         </div>
       </nav>
     </div>

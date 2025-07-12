@@ -10,7 +10,11 @@ const Page = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  const itemsPerPage = 6;
 
   // Fetch categories
   const getCategories = async () => {
@@ -31,7 +35,7 @@ const Page = () => {
       const res = await axios.get("/api/product");
       if (res.data.success) {
         setAllProducts(res.data.products);
-        setFilteredProducts(res.data.products); // default
+        setFilteredProducts(res.data.products);
       }
     } catch (err) {
       toast.error("Failed to fetch products.");
@@ -47,14 +51,9 @@ const Page = () => {
     try {
       await axios.delete(`/api/product/${id}`);
       toast.success("Product deleted successfully");
-      // Remove from local state
       const updated = allProducts.filter((p) => p._id !== id);
       setAllProducts(updated);
-      setFilteredProducts(
-        selectedCategory
-          ? updated.filter((p) => p.category?._id === selectedCategory)
-          : updated
-      );
+      applyFilters(searchQuery, selectedCategory, updated);
     } catch (error) {
       toast.error("Failed to delete product");
     }
@@ -63,13 +62,31 @@ const Page = () => {
   const handleCategoryChange = (e) => {
     const categoryId = e.target.value;
     setSelectedCategory(categoryId);
+    setCurrentPage(1);
+    applyFilters(searchQuery, categoryId);
+  };
 
-    if (categoryId === "") {
-      setFilteredProducts(allProducts);
-    } else {
-      const filtered = allProducts.filter((product) => product.category?._id === categoryId);
-      setFilteredProducts(filtered);
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    setCurrentPage(1);
+    applyFilters(query, selectedCategory);
+  };
+
+  const applyFilters = (query, categoryId, productList = allProducts) => {
+    let filtered = productList;
+
+    if (categoryId) {
+      filtered = filtered.filter((p) => p.category?._id === categoryId);
     }
+
+    if (query) {
+      filtered = filtered.filter((p) =>
+        p.title.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredProducts(filtered);
   };
 
   useEffect(() => {
@@ -77,10 +94,23 @@ const Page = () => {
     getProducts();
   }, []);
 
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
-    <div>
-      {/* Filter Dropdown */}
-      <div className="flex justify-end mb-4">
+    <div className="p-4">
+      {/* Search & Filter */}
+      <div className="flex justify-between mb-4">
+        <input
+          type="text"
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={handleSearch}
+          className="border border-gray-300 px-3 py-2 rounded-md w-1/2"
+        />
         <select
           className="border border-gray-300 px-3 py-2 rounded-md"
           value={selectedCategory}
@@ -108,7 +138,7 @@ const Page = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((v, i) => (
+            {paginatedProducts.map((v, i) => (
               <tr key={i} className="bg-white border-b">
                 <th className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex items-center">
                   <div className="w-10 h-10 mr-3 border border-gray-100 rounded-full overflow-hidden">
@@ -135,7 +165,7 @@ const Page = () => {
                       <Trash2Icon />
                     </button>
                     <Link href={`/admin/products/${v._id}`} className="text-blue-500 hover:underline">
-                      <SquarePen/>
+                      <SquarePen />
                     </Link>
                   </div>
                 </td>
@@ -144,7 +174,40 @@ const Page = () => {
           </tbody>
         </table>
         {loading && <p className="mt-4 text-center text-gray-500">Loading...</p>}
+        {!loading && filteredProducts.length === 0 && (
+          <p className="mt-4 text-center text-gray-500">No products found.</p>
+        )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+  <div className="flex justify-center mt-6 space-x-4">
+    <button
+      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+      disabled={currentPage === 1}
+      className={`px-4 py-2 border rounded-md ${
+        currentPage === 1 ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "hover:bg-gray-100"
+      }`}
+    >
+      Previous
+    </button>
+
+    <span className="px-4 py-2 border rounded-md bg-white">
+      Page {currentPage} of {totalPages}
+    </span>
+
+    <button
+      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+      disabled={currentPage === totalPages}
+      className={`px-4 py-2 border rounded-md ${
+        currentPage === totalPages ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "hover:bg-gray-100"
+      }`}
+    >
+      Next
+    </button>
+  </div>
+)}
+
     </div>
   );
 };

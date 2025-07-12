@@ -4,11 +4,13 @@ import React from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Dnav from "./Dnav";
+import { AuthProvider } from "@/context/AuthContext";
 
 const Layout = ({ children }) => {
   const pathname = usePathname();
   return (
     <>
+    <AuthProvider>
       {pathname.startsWith("/admin") ? (
         <>
           <div className="flex h-screen ">
@@ -31,6 +33,7 @@ const Layout = ({ children }) => {
           {children}
         </>
       )}
+    </AuthProvider>
     </>
   );
 };

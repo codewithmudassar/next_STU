@@ -31,13 +31,40 @@ export async function POST(req) {
 
 export async function GET(req) {
   await dbConnect();
+
   try {
-    const product = await Product.find().populate("category");
+    const { searchParams } = new URL(req.url);
+    const category = searchParams.get("category");
+    const search = searchParams.get("search");
+    const page = parseInt(searchParams.get("page")) || 1;
+    const limit = parseInt(searchParams.get("limit")) || 10;
+    const skip = (page - 1) * limit;
+
+    const query = {};
+
+    if (category) {
+      query["category"] = category;
+    }
+
+    if (search) {
+      query["title"] = { $regex: search, $options: "i" }; // case-insensitive
+    }
+
+    const total = await Product.countDocuments(query);
+    const products = await Product.find(query)
+      .populate("category")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
     return NextResponse.json(
       {
-        products: product,
-        message: "Products fetched successfully",
+        products,
+        total,
+        page,
+        totalPages: Math.ceil(total / limit),
         success: true,
+        message: "Products fetched successfully",
       },
       { status: 200 }
     );
@@ -48,7 +75,7 @@ export async function GET(req) {
         error: error.message,
         success: false,
       },
-      { status: 500 } // ✅ lowercase 'status'
+      { status: 500 }
     );
   }
 }
