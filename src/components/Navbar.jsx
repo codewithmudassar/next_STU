@@ -99,19 +99,6 @@ const Navbar = () => {
                 </Link>
               </li>
 
-   <div>
-                {
-                  <li>
-                    <Link
-                      href="/shop"
-                      className="block py-2 px-3 text-gray-900 rounded hover:bg-blue-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0p focus:text-blue-500"
-                    >
-                      Shop
-                    </Link>
-                  </li>
-                }
-              </div>
-
               <div>
                 { !user &&
                  ( <li>
