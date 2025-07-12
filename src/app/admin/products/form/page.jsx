@@ -4,6 +4,15 @@ import { CldUploadWidget } from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
+import {
+  Button,
+  Label,
+  Select,
+  TextInput,
+  Textarea,
+  Card,
+  Spinner,
+} from "flowbite-react";
 
 const page = () => {
 const router = useRouter()
@@ -53,7 +62,7 @@ const router = useRouter()
                     if (res?.data.success) {
         toast.success("Submitted successfully");
         setTimeout(() => {
-          router.back();
+          router.push("/shop");
         }, 1000);
       } else {
         toast.error("Submission failed. Please try again.");
@@ -70,52 +79,45 @@ const router = useRouter()
   return (
 
         <>
-      <div className="container mx-auto p-4">
-        <Toaster />
-        <div className="border rounded-lg bg-gray-200 mt-5 mb-7 p-4">
-          <div className="text-blue-500 font-extrabold text-3xl text-center mb-5">
-            Add Product
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-xl text-gray-500" htmlFor="name">
-                Product Name
-              </label>
-              <input
+      <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-blue-400">
+        <Card className="w-full max-w-2xl p-8 shadow-xl bg-white">
+          <Toaster />
+          <h2 className="text-blue-600 font-extrabold text-4xl text-center mb-8">Add Product</h2>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <div>
+              <Label htmlFor="name" value="Product Name" className="text-lg" />
+              <TextInput
                 id="name"
                 type="text"
                 name="title"
                 placeholder="Name"
                 onChange={handleChange}
-                className="mt-2 p-2 w-full rounded-md border active:border-blue-200"
                 required
+                shadow
+                sizing="lg"
               />
             </div>
-
-            <div className="mb-4">
-              <label className="block text-xl text-gray-500" htmlFor="stock">
-                Stock
-              </label>
-              <input
+            <div>
+              <Label htmlFor="stock" value="Stock" className="text-lg" />
+              <TextInput
                 id="stock"
                 type="number"
                 name="stock"
                 placeholder="Stock"
                 onChange={handleChange}
-                className="mt-2 p-2 w-full rounded-md border active:border-blue-200"
                 required
+                shadow
+                sizing="lg"
               />
             </div>
-
-            <div className="mb-4">
-              <label className="block text-xl text-gray-500" htmlFor="category">
-                Category
-              </label>
-              <select
-                className="mt-2 p-2 w-full rounded-md border active:border-blue-200"
-                onChange={handleChange}
+            <div>
+              <Label htmlFor="category" value="Category" className="text-lg" />
+              <Select
+                id="category"
                 name="category"
+                onChange={handleChange}
                 required
+                sizing="lg"
               >
                 <option value="">Select category</option>
                 {option?.map((v) => (
@@ -123,42 +125,35 @@ const router = useRouter()
                     {v.title}
                   </option>
                 ))}
-              </select>
+              </Select>
             </div>
-
-            <div className="mb-4">
-              <label className="block text-xl text-gray-500" htmlFor="price">
-                Price
-              </label>
-              <input
+            <div>
+              <Label htmlFor="price" value="Price" className="text-lg" />
+              <TextInput
                 id="price"
                 type="number"
                 name="price"
                 placeholder="Price"
                 onChange={handleChange}
-                className="mt-2 p-2 w-full rounded-md border active:border-blue-200"
                 required
+                shadow
+                sizing="lg"
               />
             </div>
-
-            <div className="mb-4">
-              <label className="block text-xl text-gray-500" htmlFor="desc">
-                Description
-              </label>
-              <textarea
+            <div>
+              <Label htmlFor="desc" value="Description" className="text-lg" />
+              <Textarea
                 id="desc"
                 name="desc"
                 placeholder="Description"
                 onChange={handleChange}
-                className="mt-2 p-2 w-full rounded-md border active:border-blue-200"
                 required
+                rows={4}
+                shadow
               />
             </div>
-
-            <div className="mb-4">
-              <label className="block text-xl text-gray-500" htmlFor="images">
-                Images
-              </label>
+            <div>
+              <Label htmlFor="images" value="Images" className="text-lg" />
               <div className="mt-2">
                 <CldUploadWidget
                   uploadPreset="sizzle_shop"
@@ -170,49 +165,52 @@ const router = useRouter()
                   options={{ multiple: true }}
                 >
                   {({ open }) => (
-                    <button
-                      className="font-bold p-2 bg-blue-500 text-white rounded-md"
+                    <Button
+                      color="info"
                       type="button"
                       onClick={open}
+                      className="font-bold"
                     >
                       Upload Images
-                    </button>
+                    </Button>
                   )}
                 </CldUploadWidget>
               </div>
             </div>
-
             {tempImages.length > 0 && (
               <div className="flex flex-wrap gap-4 mt-4">
                 {tempImages.map((img, index) => (
-                  <div key={index} className="relative w-[160px] h-[160px]">
+                  <div key={index} className="relative w-[120px] h-[120px]">
                     <img
                       src={img}
                       alt={`Uploaded ${index}`}
-                      className="w-full h-full object-cover rounded-lg"
+                      className="w-full h-full object-cover rounded-lg border border-gray-200 shadow"
                     />
-                    <button
+                    <Button
+                      color="failure"
+                      size="xs"
                       onClick={() => setTempImages((prevImages) => prevImages.filter((_, i) => i !== index))}
-                      className="absolute top-1 right-1 bg-red-600 text-white rounded-full p-1"
+                      className="absolute top-1 right-1 rounded-full p-1"
+                      type="button"
                     >
                       &times;
-                    </button>
+                    </Button>
                   </div>
                 ))}
               </div>
             )}
-
-            <div className="mb-4">
-              <button
-                className="mt-2 p-2 w-full rounded-md border font-bold uppercase text-white bg-blue-600"
-                type="submit"
-                disabled={loading}
-              >
-                {loading ? "loading..." : "Submit"}
-              </button>
-            </div>
+            <Button
+              type="submit"
+              color="blue"
+              size="lg"
+              className="mt-6 font-bold text-lg bg-black p-3"
+              disabled={loading}
+            >
+              {loading ? <Spinner size="sm" className="mr-2" /> : null}
+              {loading ? "Submitting..." : "Add Product"}
+            </Button>
           </form>
-        </div>
+        </Card>
       </div>
     </>
   )

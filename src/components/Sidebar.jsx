@@ -32,6 +32,8 @@ const toggleSidebar = ()=>{
     },
     { path: "/admin/orders", lable: "Orders", icon: <ListOrdered /> },
     { path: "/admin/categories", lable: "Categories", icon: <ChartArea /> },
+
+  
   ];
 
   return (
