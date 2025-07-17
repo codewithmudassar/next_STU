@@ -14,7 +14,7 @@ export async function GET(req) {
 
     const payload = await JWTVerify(token);
 
-    console.log('Decoded payload:', payload); // ✅ Check this in terminal
+    // console.log('Decoded payload:', payload); // ✅ Check this in terminal
 
     if (!payload?.id || typeof payload.id !== 'string') {
       return NextResponse.json({ success: false, message: 'Invalid token structure' }, { status: 403 });

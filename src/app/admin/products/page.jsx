@@ -45,7 +45,9 @@ const Page = () => {
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("Are you sure you want to delete this product?");
+    const confirm = window.confirm(
+      "Are you sure you want to delete this product?"
+    );
     if (!confirm) return;
 
     try {
@@ -81,9 +83,7 @@ const Page = () => {
     }
 
     if (query) {
-      filtered = filtered.filter((p) =>
-        p.title.toLowerCase().includes(query)
-      );
+      filtered = filtered.filter((p) => p.title.toLowerCase().includes(query));
     }
 
     setFilteredProducts(filtered);
@@ -112,41 +112,39 @@ const Page = () => {
           className="border border-gray-300 px-3 py-2 rounded-md w-1/2"
         />
         <div className="flex items-center">
+          <select
+            className="border border-gray-300 px-3 py-2 rounded-md"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+          >
+            <option value="">All Categories</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.title}
+              </option>
+            ))}
+          </select>
 
-        <select
-          className="border border-gray-300 px-3 py-2 rounded-md"
-          value={selectedCategory}
-          onChange={handleCategoryChange}
-        >
-          <option value="">All Categories</option>
-          {categories.map((cat) => (
-            <option key={cat._id} value={cat._id}>
-              {cat.title}
-            </option>
-          ))}
-        </select>
-       
-<Link 
-href={"/admin/products/form"}
-  title="Add New"
-  class="group cursor-pointer outline-none hover:rotate-90 duration-300"
->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="50px"
-    height="50px"
-    viewBox="0 0 24 24"
-    class="stroke-blue-400 fill-none  group-active:stroke-blue-100 group-active:fill-blue-200 group-active:duration-0 duration-300"
-  >
-    <path
-      d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
-      stroke-width="1.5"
-    ></path>
-    <path d="M8 12H16" stroke-width="1.5"></path>
-    <path d="M12 16V8" stroke-width="1.5"></path>
-  </svg>
-</Link>
-
+          <Link
+            href={"/admin/products/form"}
+            title="Add New"
+            class="group cursor-pointer outline-none hover:rotate-90 duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="50px"
+              height="50px"
+              viewBox="0 0 24 24"
+              class="stroke-blue-400 fill-none  group-active:stroke-blue-100 group-active:fill-blue-200 group-active:duration-0 duration-300"
+            >
+              <path
+                d="M12 22C17.5 22 22 17.5 22 12C22 6.5 17.5 2 12 2C6.5 2 2 6.5 2 12C2 17.5 6.5 22 12 22Z"
+                stroke-width="1.5"
+              ></path>
+              <path d="M8 12H16" stroke-width="1.5"></path>
+              <path d="M12 16V8" stroke-width="1.5"></path>
+            </svg>
+          </Link>
         </div>
       </div>
 
@@ -189,7 +187,10 @@ href={"/admin/products/form"}
                     >
                       <Trash2Icon />
                     </button>
-                    <Link href={`/admin/products/${v._id}`} className="text-blue-500 hover:underline">
+                    <Link
+                      href={`/admin/products/${v._id}`}
+                      className="text-blue-500 hover:underline"
+                    >
                       <SquarePen />
                     </Link>
                   </div>
@@ -198,7 +199,9 @@ href={"/admin/products/form"}
             ))}
           </tbody>
         </table>
-        {loading && <p className="mt-4 text-center text-gray-500">Loading...</p>}
+        {loading && (
+          <p className="mt-4 text-center text-gray-500">Loading...</p>
+        )}
         {!loading && filteredProducts.length === 0 && (
           <p className="mt-4 text-center text-gray-500">No products found.</p>
         )}
@@ -206,33 +209,38 @@ href={"/admin/products/form"}
 
       {/* Pagination */}
       {totalPages > 1 && (
-  <div className="flex justify-center mt-6 space-x-4">
-    <button
-      onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-      disabled={currentPage === 1}
-      className={`px-4 py-2 border rounded-md ${
-        currentPage === 1 ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "hover:bg-gray-100"
-      }`}
-    >
-      Previous
-    </button>
+        <div className="flex justify-center mt-6 space-x-4">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 border rounded-md ${
+              currentPage === 1
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : "hover:bg-gray-100"
+            }`}
+          >
+            Previous
+          </button>
 
-    <span className="px-4 py-2 border rounded-md bg-white">
-      Page {currentPage} of {totalPages}
-    </span>
+          <span className="px-4 py-2 border rounded-md bg-white">
+            Page {currentPage} of {totalPages}
+          </span>
 
-    <button
-      onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-      disabled={currentPage === totalPages}
-      className={`px-4 py-2 border rounded-md ${
-        currentPage === totalPages ? "bg-gray-200 text-gray-500 cursor-not-allowed" : "hover:bg-gray-100"
-      }`}
-    >
-      Next
-    </button>
-  </div>
-)}
-
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 border rounded-md ${
+              currentPage === totalPages
+                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+                : "hover:bg-gray-100"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

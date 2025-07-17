@@ -4,15 +4,6 @@ import { CldUploadWidget } from 'next-cloudinary';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
-import {
-  Button,
-  Label,
-  Select,
-  TextInput,
-  Textarea,
-  Card,
-  Spinner,
-} from "flowbite-react";
 
 const page = () => {
 const router = useRouter()
@@ -80,13 +71,13 @@ const router = useRouter()
 
         <>
       <div className="flex justify-center items-center min-h-screen bg-gray-50 dark:bg-blue-400">
-        <Card className="w-full max-w-2xl p-8 shadow-xl bg-white">
+        <div className="w-full max-w-2xl p-8 shadow-xl bg-white">
           <Toaster />
           <h2 className="text-blue-600 font-extrabold text-4xl text-center mb-8">Add Product</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div>
-              <Label htmlFor="name" value="Product Name" className="text-lg" />
-              <TextInput
+              <lable htmlFor="name" value="Product Name" className="text-lg" />
+              <input
                 id="name"
                 type="text"
                 name="title"
@@ -98,8 +89,8 @@ const router = useRouter()
               />
             </div>
             <div>
-              <Label htmlFor="stock" value="Stock" className="text-lg" />
-              <TextInput
+              <lable htmlFor="stock" value="Stock" className="text-lg" />
+              <input
                 id="stock"
                 type="number"
                 name="stock"
@@ -111,8 +102,8 @@ const router = useRouter()
               />
             </div>
             <div>
-              <Label htmlFor="category" value="Category" className="text-lg" />
-              <Select
+              <lable htmlFor="category" value="Category" className="text-lg" />
+              <select
                 id="category"
                 name="category"
                 onChange={handleChange}
@@ -125,11 +116,11 @@ const router = useRouter()
                     {v.title}
                   </option>
                 ))}
-              </Select>
+              </select>
             </div>
             <div>
-              <Label htmlFor="price" value="Price" className="text-lg" />
-              <TextInput
+              <lable htmlFor="price" value="Price" className="text-lg" />
+              <input
                 id="price"
                 type="number"
                 name="price"
@@ -141,8 +132,8 @@ const router = useRouter()
               />
             </div>
             <div>
-              <Label htmlFor="desc" value="Description" className="text-lg" />
-              <Textarea
+              <lable htmlFor="desc" value="Description" className="text-lg" />
+              <textarea
                 id="desc"
                 name="desc"
                 placeholder="Description"
@@ -153,7 +144,7 @@ const router = useRouter()
               />
             </div>
             <div>
-              <Label htmlFor="images" value="Images" className="text-lg" />
+              <lable htmlFor="images" value="Images" className="text-lg" />
               <div className="mt-2">
                 <CldUploadWidget
                   uploadPreset="sizzle_shop"
@@ -165,14 +156,14 @@ const router = useRouter()
                   options={{ multiple: true }}
                 >
                   {({ open }) => (
-                    <Button
+                    <button
                       color="info"
                       type="button"
                       onClick={open}
                       className="font-bold"
                     >
                       Upload Images
-                    </Button>
+                    </button>
                   )}
                 </CldUploadWidget>
               </div>
@@ -186,7 +177,7 @@ const router = useRouter()
                       alt={`Uploaded ${index}`}
                       className="w-full h-full object-cover rounded-lg border border-gray-200 shadow"
                     />
-                    <Button
+                    <button
                       color="failure"
                       size="xs"
                       onClick={() => setTempImages((prevImages) => prevImages.filter((_, i) => i !== index))}
@@ -194,23 +185,23 @@ const router = useRouter()
                       type="button"
                     >
                       &times;
-                    </Button>
+                    </button>
                   </div>
                 ))}
               </div>
             )}
-            <Button
+            <button
               type="submit"
               color="blue"
               size="lg"
               className="mt-6 font-bold text-lg bg-black p-3"
               disabled={loading}
             >
-              {loading ? <Spinner size="sm" className="mr-2" /> : null}
+              {loading ? "loading..." : null}
               {loading ? "Submitting..." : "Add Product"}
-            </Button>
+            </button>
           </form>
-        </Card>
+        </div>
       </div>
     </>
   )
